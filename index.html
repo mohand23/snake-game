@@ -3,831 +3,324 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HealthAI – Revolutionizing Healthcare with AI</title>
-  <meta name="description" content="Revolutionizing Healthcare with AI-Powered Insights. Secure, integrated, and cutting-edge technology for modern healthcare." />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kTcGdUhe5JsWfj3t8fZxv4RG3CLYzswkQeZxM0uA3+O8wH6yKk2b4UeQ3h2e19PFSYG+4U6Y3Y9NQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>MedSynch – The Future of Healthcare Automation</title>
+  <meta name="description" content="MedSynch is an AI-powered healthcare automation platform streamlining patient data, billing, and scheduling." />
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+  <!-- Three.js via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
+  <!-- Optional: Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
-    /* Global Styles */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; line-height: 1.6; color: #333; }
-    a { text-decoration: none; color: inherit; }
-    h1, h2, h3, h4, h5, h6 { margin-bottom: 1rem; }
-    p { margin-bottom: 1rem; }
-
-    /* Color Variables */
-    :root {
-      --primary: #007BFF;
-      --secondary: #20C997;
-      --light: #ffffff;
-      --dark: #343a40;
-      --bg-light: #f8f9fa;
+    /* Additional custom styles */
+    body {
+      font-family: 'Poppins', sans-serif;
     }
-
-    /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: var(--light);
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .navbar .logo { font-size: 1.8rem; font-weight: 600; color: var(--primary); }
-    .navbar ul { list-style: none; display: flex; }
-    .navbar ul li { margin-left: 1.5rem; }
-    .navbar ul li a {
-      color: var(--dark);
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .navbar ul li a:hover { color: var(--primary); }
-    /* Hamburger Menu */
-    .hamburger {
-      display: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    @media (max-width: 768px) {
-      .navbar ul { 
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background: var(--light);
-        flex-direction: column;
-        display: none;
-      }
-      .navbar ul.active { display: flex; }
-      .navbar ul li { margin: 1rem 0; text-align: center; }
-      .hamburger { display: block; }
-    }
-
-    /* Hero Section */
-    section.hero {
-      position: relative;
-      height: 100vh;
-      background: linear-gradient(45deg, rgba(0, 123, 255, 0.7), rgba(32, 201, 151, 0.7)),
-        url('https://source.unsplash.com/1600x900/?healthcare,technology');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--light);
-      text-align: center;
-      padding-top: 60px; /* For fixed navbar */
-    }
-    .hero-content { z-index: 1; max-width: 800px; padding: 20px; }
-    .hero-content h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
-    .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); }
-    .hero-buttons .btn {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      margin: 0.5rem;
-      border-radius: 30px;
-      font-weight: 600;
-      transition: background 0.3s, transform 0.3s;
-    }
-    .btn-primary { background: var(--light); color: var(--primary); }
-    .btn-primary:hover { background: var(--primary); color: var(--light); transform: scale(1.05); }
-    .btn-secondary { background: var(--secondary); color: var(--light); }
-    .btn-secondary:hover { background: var(--light); color: var(--secondary); transform: scale(1.05); }
-
-    /* Section Styling */
-    section { padding: 100px 2rem; }
-    .container { max-width: 1200px; margin: auto; }
-
-    /* Features Section */
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: space-around;
-      text-align: center;
-    }
-    .feature-item {
-      flex: 1 1 300px;
-      background: var(--bg-light);
-      padding: 2rem;
-      border-radius: 10px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .feature-item:hover { transform: translateY(-10px); box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
-    .feature-item img { width: 80px; height: 80px; object-fit: cover; margin-bottom: 1rem; border-radius: 50%; }
-
-    /* Testimonials Section */
-    .testimonials { position: relative; }
-    .testimonial-slide { display: none; text-align: center; padding: 2rem; transition: opacity 0.5s; }
-    .testimonial-slide.active { display: block; opacity: 1; }
-    .testimonial-slide img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 1rem; object-fit: cover; }
-    .testimonial-slide p { font-style: italic; }
-
-    /* CTA Form */
-    .cta-form {
-      background: var(--primary);
-      color: var(--light);
-      padding: 2rem;
-      border-radius: 10px;
-      text-align: center;
-      margin-top: 2rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    .cta-form input, .cta-form select {
-      padding: 0.75rem;
-      margin: 0.5rem;
-      border: none;
-      border-radius: 5px;
-      width: 80%;
-      max-width: 300px;
-    }
-    .cta-form button {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 30px;
-      background: var(--secondary);
-      color: var(--light);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .cta-form button:hover { background: var(--light); color: var(--secondary); }
-
-    /* Product Section */
-    .product-mockup { text-align: center; }
-    .accordion { max-width: 800px; margin: auto; text-align: left; }
-    .accordion-item {
-      background: var(--bg-light);
-      margin: 1rem 0;
-      border-radius: 5px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .accordion-header {
-      padding: 1rem;
-      cursor: pointer;
-      position: relative;
-      background: var(--light);
-    }
-    .accordion-header::after {
-      content: '+';
-      position: absolute;
-      right: 20px;
-      font-size: 1.5rem;
-      transition: transform 0.3s;
-    }
-    .accordion-header.active::after {
-      content: '-';
-      transform: rotate(180deg);
-    }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0 1rem;
-    }
-    .accordion-content p { padding: 1rem 0; }
-
-    /* Pricing Section */
-    .pricing-toggle { text-align: center; margin-bottom: 2rem; }
-    .pricing-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-    }
-    .pricing-card {
-      background: var(--bg-light);
-      padding: 2rem;
-      border-radius: 10px;
-      width: 300px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .pricing-card:hover { transform: scale(1.05); box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
-    .pricing-card h3 { margin-bottom: 1rem; }
-    .pricing-card ul { list-style: none; text-align: left; margin: 1rem 0; }
-    .pricing-card ul li { margin-bottom: 0.5rem; }
-    .pricing-card button {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 30px;
-      background: var(--primary);
-      color: var(--light);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .pricing-card button:hover { background: var(--secondary); }
-
-    /* About Us Section */
-    .timeline {
-      position: relative;
-      padding: 2rem 0;
-    }
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      width: 2px;
-      height: 100%;
-      background: var(--primary);
-      transform: translateX(-50%);
-    }
-    .timeline-item {
-      position: relative;
-      width: 45%;
-      padding: 1rem 2rem;
-      background: var(--bg-light);
-      border-radius: 10px;
-      margin: 1rem 0;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .timeline-item:nth-child(odd) { left: 0; }
-    .timeline-item:nth-child(even) { left: 55%; }
-    .team {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-    }
-    .team-member { text-align: center; width: 200px; }
-    .team-member img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      transition: transform 0.3s;
-      object-fit: cover;
-    }
-    .team-member img:hover { transform: scale(1.1); }
-
-    /* Blog Section */
-    .blog-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-    }
-    .blog-card {
-      background: var(--light);
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      width: 300px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .blog-card:hover { transform: translateY(-10px); box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
-    .blog-card img { width: 100%; height: 200px; object-fit: cover; }
-    .blog-card .card-content { padding: 1rem; }
-    .blog-card .card-content h4 { margin-bottom: 0.5rem; }
-
-    /* Contact Section */
-    .contact-form {
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
-    }
-    .contact-form input,
-    .contact-form textarea,
-    .contact-form select {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .contact-form button {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 30px;
-      background: var(--primary);
-      color: var(--light);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .contact-form button:hover { background: var(--secondary); }
-    /* FAQ */
-    .faq-item {
-      margin: 1rem 0;
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 0;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .faq-item:hover { background: #f1f1f1; }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0 1rem;
-    }
-    .faq-item.active .faq-answer {
-      max-height: 100px;
-      padding: 1rem;
-    }
-
-    /* Dashboard Preview */
-    .dashboard {
-      background: var(--bg-light);
-      padding: 2rem;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    .mode-toggle { margin-bottom: 1rem; }
-
-    /* Footer */
-    footer {
-      background: var(--dark);
-      color: var(--light);
-      padding: 2rem;
-      text-align: center;
-    }
-    footer a {
-      color: var(--secondary);
-      margin: 0 0.5rem;
-      transition: color 0.3s;
-    }
-    footer a:hover { color: var(--primary); }
-
-    /* Chatbot Button */
-    .chatbot-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--secondary);
-      color: var(--light);
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-    }
-    /* Chatbot Modal */
-    .chatbot-modal {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 300px;
-      background: var(--light);
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 1000;
-    }
-    .chatbot-modal header {
-      background: var(--secondary);
-      color: var(--light);
-      padding: 1rem;
-      font-weight: 600;
-    }
-    .chatbot-modal .chatbot-content { padding: 1rem; height: 200px; overflow-y: auto; }
-    .chatbot-modal footer { padding: 0.5rem; text-align: center; }
-    .chatbot-modal input { width: 80%; padding: 0.5rem; }
-    .chatbot-modal button {
-      padding: 0.5rem;
-      background: var(--primary);
-      color: var(--light);
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    /* Secure Login Modal */
-    #loginModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    #loginModal .modal-content {
-      background: var(--light);
-      padding: 2rem;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 90%;
-    }
-    #loginModal input {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    #loginModal button {
-      padding: 0.75rem 1.5rem;
-      background: var(--primary);
-      color: var(--light);
-      border: none;
-      border-radius: 30px;
-      width: 100%;
-      margin-top: 1rem;
+    /* Dark mode class */
+    .dark-mode {
+      background-color: #1a202c;
+      color: #f7fafc;
     }
   </style>
 </head>
-<body>
+<body class="bg-white text-gray-800 transition-colors duration-500">
   <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo">HealthAI</div>
-    <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
-    <ul id="nav-menu">
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#product">Product</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="#dashboard">Dashboard</a></li>
-    </ul>
+  <nav class="flex items-center justify-between p-4 fixed w-full z-50 bg-white dark:bg-gray-900 shadow">
+    <div class="font-bold text-xl">MedSynch</div>
+    <div class="space-x-4 hidden md:flex">
+      <a href="#hero" class="hover:text-blue-500">Home</a>
+      <a href="#features" class="hover:text-blue-500">Features</a>
+      <a href="#pricing" class="hover:text-blue-500">Pricing</a>
+      <a href="#blog" class="hover:text-blue-500">Blog</a>
+      <a href="#contact" class="hover:text-blue-500">Contact</a>
+    </div>
+    <div class="space-x-4">
+      <button id="toggle-dark" class="px-3 py-1 border rounded">Dark Mode</button>
+      <button id="open-login" class="px-3 py-1 border rounded">Login</button>
+    </div>
   </nav>
-
+  
   <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="hero-content container">
-      <h1>Revolutionizing Healthcare with AI-Powered Insights</h1>
-      <p>Transform patient care with advanced analytics, secure data handling, and seamless integration.</p>
-      <div class="hero-buttons">
-        <a href="#getstarted" class="btn btn-primary">Get Started</a>
-        <a href="#demo" class="btn btn-secondary">Book a Demo</a>
+  <section id="hero" class="relative flex flex-col items-center justify-center h-screen bg-cover bg-center" style="background-image: url('https://source.unsplash.com/1600x900/?healthcare,technology');">
+    <div class="absolute inset-0 bg-blue-900 opacity-50"></div>
+    <div class="relative z-10 text-center p-4">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">The Future of Healthcare Automation is Here</h1>
+      <p class="mb-8 text-lg">Streamline patient data, billing, and scheduling with AI-driven insights.</p>
+      <div class="space-x-4">
+        <button class="px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded text-white font-semibold">Get Started</button>
+        <button class="px-6 py-3 bg-teal-500 hover:bg-teal-600 rounded text-white font-semibold">Book a Demo</button>
       </div>
     </div>
+    <!-- Three.js Floating Cube -->
+    <canvas id="three-canvas" class="absolute bottom-10 right-10 w-48 h-48"></canvas>
   </section>
-
+  
   <!-- Features Section -->
-  <section id="features">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">Key Benefits</h2>
-      <div class="features">
-        <div class="feature-item">
-          <img src="https://source.unsplash.com/80x80/?ai" alt="AI-Driven Insights">
-          <h3>AI-Driven Insights</h3>
-          <p>Leverage cutting-edge AI to provide actionable insights for better patient outcomes.</p>
+  <section id="features" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8">Features</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="p-6 border rounded hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">AI-Powered Medical Record Syncing</h3>
+          <p>Automate patient data updates across systems seamlessly.</p>
         </div>
-        <div class="feature-item">
-          <img src="https://source.unsplash.com/80x80/?security" alt="Secure Data Handling">
-          <h3>Secure Data Handling</h3>
-          <p>Ensuring HIPAA and GDPR compliance for all your sensitive healthcare data.</p>
+        <div class="p-6 border rounded hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">Smart Appointment Scheduling</h3>
+          <p>Reduce no-shows with intelligent scheduling powered by AI.</p>
         </div>
-        <div class="feature-item">
-          <img src="https://source.unsplash.com/80x80/?integration" alt="Seamless Integration">
-          <h3>Seamless Integration</h3>
-          <p>Integrate effortlessly with existing systems and EHR platforms.</p>
+        <div class="p-6 border rounded hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">Automated Insurance Verification</h3>
+          <p>Real-time eligibility checks for smoother billing processes.</p>
+        </div>
+        <div class="p-6 border rounded hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">HIPAA-Compliant Security</h3>
+          <p>Ensure your patient data is encrypted and secure.</p>
+        </div>
+      </div>
+      <div class="mt-8">
+        <button class="px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded text-white font-semibold">Sign up for a free 14-day trial</button>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Interactive Dashboard Previews -->
+  <section id="interactive-features" class="py-20 bg-gray-100 dark:bg-gray-800 px-4">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8">Dashboard Previews</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="border rounded shadow hover:shadow-xl transition p-4">
+          <img src="https://source.unsplash.com/400x300/?doctor" alt="For Doctors" class="w-full h-48 object-cover rounded mb-4">
+          <h3 class="text-xl font-semibold mb-2">For Doctors</h3>
+          <p>Streamlined patient data and scheduling at your fingertips.</p>
+        </div>
+        <div class="border rounded shadow hover:shadow-xl transition p-4">
+          <img src="https://source.unsplash.com/400x300/?clinic" alt="For Clinics" class="w-full h-48 object-cover rounded mb-4">
+          <h3 class="text-xl font-semibold mb-2">For Clinics</h3>
+          <p>Automate administrative tasks and billing processes.</p>
+        </div>
+        <div class="border rounded shadow hover:shadow-xl transition p-4">
+          <img src="https://source.unsplash.com/400x300/?patient" alt="For Patients" class="w-full h-48 object-cover rounded mb-4">
+          <h3 class="text-xl font-semibold mb-2">For Patients</h3>
+          <p>Experience a hassle-free, efficient healthcare journey.</p>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- Testimonials Section -->
-  <section id="testimonials" style="background: var(--bg-light);">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">What Our Clients Say</h2>
-      <div class="testimonials">
-        <div class="testimonial-slide active">
-          <img src="https://source.unsplash.com/80x80/?doctor,smile" alt="Doctor 1">
-          <p>"This platform has transformed our practice. The AI insights are a game changer!"</p>
-          <strong>Dr. Emily Smith, City Hospital</strong>
-        </div>
-        <div class="testimonial-slide">
-          <img src="https://source.unsplash.com/80x80/?doctor,portrait" alt="Doctor 2">
-          <p>"Secure, reliable, and innovative. Our clinic's efficiency has skyrocketed."</p>
-          <strong>Dr. John Johnson, Health Clinic</strong>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Free Trial Form -->
-  <section id="getstarted">
-    <div class="container">
-      <div class="cta-form">
-        <h2>Start Your Free Trial</h2>
-        <p>Experience the future of healthcare technology. No credit card required.</p>
-        <form>
-          <input type="email" placeholder="Enter your email" required>
-          <button type="submit">Request Demo</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- Product Section -->
-  <section id="product">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">Our Product</h2>
-      <div class="product-mockup">
-        <!-- Video demo placeholder -->
-        <video width="600" controls style="max-width:100%; border-radius:10px;">
-          <source src="demo.mp4" type="video/mp4">
-          Your browser does not support HTML video.
-        </video>
-      </div>
-      <div class="accordion">
-        <div class="accordion-item">
-          <div class="accordion-header">AI Insights</div>
-          <div class="accordion-content">
-            <p>Advanced algorithms provide real-time analysis to improve decision-making.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <div class="accordion-header">EHR Integration</div>
-          <div class="accordion-content">
-            <p>Seamlessly integrate with existing Electronic Health Records for smooth operations.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <div class="accordion-header">Telehealth Support</div>
-          <div class="accordion-content">
-            <p>Enable remote consultations and monitoring with our secure platform.</p>
-          </div>
-        </div>
-      </div>
-      <div style="text-align:center; margin-top:2rem;">
-        <a href="#getstarted" class="btn btn-primary">Start Free Trial</a>
-      </div>
-    </div>
-  </section>
-
+  
   <!-- Pricing Section -->
-  <section id="pricing">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">Pricing Plans</h2>
-      <div class="pricing-toggle">
-        <label for="pricingSwitch">Monthly / Yearly</label>
-        <input type="checkbox" id="pricingSwitch" style="margin-left:10px;">
+  <section id="pricing" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8">Pricing</h2>
+      <div class="flex items-center justify-center mb-8">
+        <span class="mr-2">Monthly</span>
+        <input type="checkbox" id="pricing-toggle" class="toggle-checkbox" />
+        <span class="ml-2">Yearly</span>
       </div>
-      <div class="pricing-cards">
-        <div class="pricing-card" data-monthly="29" data-yearly="290">
-          <h3>Basic</h3>
-          <p class="price">$29/mo</p>
-          <ul>
-            <li>Basic Features</li>
-            <li>Email Support</li>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="relative border rounded p-6 transition transform hover:scale-105">
+          <h3 class="text-2xl font-bold mb-4">Basic</h3>
+          <p class="text-4xl font-semibold mb-4">$29<span class="text-lg">/mo</span></p>
+          <ul class="mb-4 space-y-2 text-left">
+            <li>- Basic Features</li>
+            <li>- Email Support</li>
           </ul>
-          <button>Choose Plan</button>
+          <button class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded">Choose Plan</button>
         </div>
-        <div class="pricing-card" data-monthly="59" data-yearly="590">
-          <h3>Pro</h3>
-          <p class="price">$59/mo</p>
-          <ul>
-            <li>Advanced Analytics</li>
-            <li>Priority Support</li>
+        <div class="relative border rounded p-6 transition transform hover:scale-105 border-blue-500">
+          <div class="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 text-xs">Best Value</div>
+          <h3 class="text-2xl font-bold mb-4">Pro</h3>
+          <p class="text-4xl font-semibold mb-4">$59<span class="text-lg">/mo</span></p>
+          <ul class="mb-4 space-y-2 text-left">
+            <li>- Advanced Analytics</li>
+            <li>- Priority Support</li>
           </ul>
-          <button>Choose Plan</button>
+          <button class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded">Choose Plan</button>
         </div>
-        <div class="pricing-card" data-monthly="99" data-yearly="990">
-          <h3>Enterprise</h3>
-          <p class="price">$99/mo</p>
-          <ul>
-            <li>All Features</li>
-            <li>Dedicated Support</li>
+        <div class="relative border rounded p-6 transition transform hover:scale-105">
+          <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
+          <p class="text-4xl font-semibold mb-4">$99<span class="text-lg">/mo</span></p>
+          <ul class="mb-4 space-y-2 text-left">
+            <li>- All Features</li>
+            <li>- Dedicated Support</li>
           </ul>
-          <button>Choose Plan</button>
+          <button class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded">Choose Plan</button>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- About Us Section -->
-  <section id="about">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">About Us</h2>
-      <p style="text-align:center;">Our journey began with a mission to revolutionize healthcare. Learn about our story, our team, and our vision.</p>
-      <div class="timeline">
-        <div class="timeline-item">
-          <h4>2018</h4>
-          <p>Founded with the vision to integrate AI in healthcare.</p>
-        </div>
-        <div class="timeline-item">
-          <h4>2020</h4>
-          <p>Launched our first platform with advanced analytics.</p>
-        </div>
-        <div class="timeline-item">
-          <h4>2023</h4>
-          <p>Expanded globally, transforming patient care worldwide.</p>
-        </div>
-      </div>
-      <h3 style="text-align:center; margin:2rem 0;">Meet Our Team</h3>
-      <div class="team">
-        <div class="team-member">
-          <img src="https://source.unsplash.com/200x200/?doctor" alt="Team Member">
-          <p>Alex Johnson</p>
-        </div>
-        <div class="team-member">
-          <img src="https://source.unsplash.com/200x200/?nurse" alt="Team Member">
-          <p>Sara Williams</p>
-        </div>
-        <div class="team-member">
-          <img src="https://source.unsplash.com/200x200/?medical" alt="Team Member">
-          <p>Michael Brown</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  
   <!-- Blog Section -->
-  <section id="blog">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">Latest from Our Blog</h2>
-      <div class="blog-cards">
-        <div class="blog-card">
-          <img src="https://source.unsplash.com/300x200/?health,ai" alt="Blog Post">
-          <div class="card-content">
-            <h4>AI in Healthcare</h4>
-            <p>Discover how AI is transforming patient care.</p>
+  <section id="blog" class="py-20 px-4 bg-gray-100 dark:bg-gray-800">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8">Blog</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="border rounded overflow-hidden hover:shadow-xl transition">
+          <img src="https://source.unsplash.com/400x300/?ai,healthcare" alt="Blog Post" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">How AI is Transforming Healthcare</h3>
+            <p class="mb-2">Explore the revolutionary changes in healthcare brought by AI.</p>
             <small>By Dr. Smith - 5 min read</small>
           </div>
         </div>
-        <div class="blog-card">
-          <img src="https://source.unsplash.com/300x200/?ehr" alt="Blog Post">
-          <div class="card-content">
-            <h4>EHR Trends</h4>
-            <p>Exploring the latest trends in Electronic Health Records.</p>
+        <div class="border rounded overflow-hidden hover:shadow-xl transition">
+          <img src="https://source.unsplash.com/400x300/?billing,health" alt="Blog Post" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">The Future of Medical Billing</h3>
+            <p class="mb-2">Discover how automation is streamlining billing processes.</p>
             <small>By Dr. Johnson - 4 min read</small>
           </div>
         </div>
-        <div class="blog-card">
-          <img src="https://source.unsplash.com/300x200/?cybersecurity,health" alt="Blog Post">
-          <div class="card-content">
-            <h4>Cybersecurity in Healthtech</h4>
-            <p>Ensuring data protection in the digital age.</p>
-            <small>By Alex Brown - 6 min read</small>
+        <div class="border rounded overflow-hidden hover:shadow-xl transition">
+          <img src="https://source.unsplash.com/400x300/?patient,management" alt="Blog Post" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">Streamlining Patient Management</h3>
+            <p class="mb-2">Learn how digital tools are transforming patient care.</p>
+            <small>By Dr. Lee - 6 min read</small>
           </div>
         </div>
       </div>
     </div>
   </section>
-
+  
   <!-- Contact & Support Section -->
-  <section id="contact">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">Contact & Support</h2>
-      <div class="contact-form">
-        <form>
-          <input type="text" placeholder="Your Name" required>
-          <input type="email" placeholder="Your Email" required>
-          <select required>
+  <section id="contact" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8">Contact & Support</h2>
+      <div class="mb-8">
+        <form class="max-w-lg mx-auto space-y-4">
+          <input type="text" placeholder="Your Name" class="w-full p-3 border rounded" required>
+          <input type="email" placeholder="Your Email" class="w-full p-3 border rounded" required>
+          <select class="w-full p-3 border rounded" required>
             <option value="">Select Reason</option>
             <option value="sales">Sales</option>
             <option value="support">Support</option>
             <option value="partnerships">Partnerships</option>
           </select>
-          <textarea placeholder="Your Message" rows="5" required></textarea>
-          <button type="submit">Send Message</button>
+          <textarea placeholder="Your Message" rows="4" class="w-full p-3 border rounded" required></textarea>
+          <button type="submit" class="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded">Send Message</button>
         </form>
       </div>
-      <div style="margin-top:2rem; text-align:center;">
-        <h3>Our Office Location</h3>
-        <img src="https://source.unsplash.com/600x300/?office" alt="Map" style="max-width:100%; border-radius:10px;">
+      <div class="mb-8">
+        <h3 class="text-xl font-semibold mb-4">Our Office Location</h3>
+        <img src="https://source.unsplash.com/600x300/?office" alt="Office" class="mx-auto rounded">
       </div>
-      <div style="margin-top:2rem;">
-        <h3 style="text-align:center;">FAQs</h3>
-        <div class="faq-item">
-          <h4>What is HealthAI?</h4>
-          <div class="faq-answer">
-            <p>HealthAI is an AI-powered healthcare solution designed to streamline operations and enhance patient care.</p>
+      <div>
+        <button id="open-chatbot" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded">Chat with us</button>
+        <div id="chatbot" class="hidden absolute bottom-20 right-8 w-80 p-4 bg-white dark:bg-gray-700 border rounded shadow-lg">
+          <h3 class="font-semibold mb-2">Live Support</h3>
+          <div class="h-32 overflow-y-auto mb-2">
+            <p class="text-sm">Hello! How can we help you today?</p>
           </div>
-        </div>
-        <div class="faq-item">
-          <h4>Is my data secure?</h4>
-          <div class="faq-answer">
-            <p>Absolutely. We adhere to HIPAA and GDPR regulations to ensure your data is safe.</p>
+          <div class="flex space-x-2">
+            <input type="text" placeholder="Type your message..." class="flex-grow p-2 border rounded">
+            <button class="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Send</button>
           </div>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- Dashboard Preview Section -->
-  <section id="dashboard">
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom:2rem;">Dashboard Preview</h2>
-      <div class="dashboard">
-        <div class="mode-toggle">
-          <label for="modeSwitch">Dark / Light Mode</label>
-          <input type="checkbox" id="modeSwitch" style="margin-left:10px;">
-        </div>
-        <div>
-          <h3>Real-time Analytics</h3>
-          <p>Interactive charts and metrics displayed here.</p>
-        </div>
-      </div>
+  
+  <!-- Floating Help Button -->
+  <button id="help-btn" class="fixed bottom-8 right-8 bg-teal-500 hover:bg-teal-600 text-white p-4 rounded-full shadow-lg">
+    <i class="fas fa-question-circle"></i>
+  </button>
+  <div id="help-modal" class="hidden fixed inset-0 flex items-center justify-center z-50">
+    <div id="help-close-overlay" class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="bg-white dark:bg-gray-800 p-8 rounded shadow-lg z-10 max-w-sm mx-auto">
+      <h3 class="text-xl font-bold mb-4">How can we help?</h3>
+      <p class="mb-4">Browse our FAQ or contact support for assistance.</p>
+      <button id="close-help" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Close</button>
     </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 HealthAI. All Rights Reserved.</p>
-      <p>
-        <a href="#about">About</a> |
-        <a href="#blog">Blog</a> |
-        <a href="#contact">Support</a> |
-        <a href="#">Careers</a> |
-        <a href="#">Terms</a> |
-        <a href="#">Privacy</a>
-      </p>
-      <p>GDPR &amp; HIPAA Compliant</p>
-    </div>
-  </footer>
-
-  <!-- Chatbot Floating Button -->
-  <button class="chatbot-button" id="chatbotToggle"><i class="fas fa-comment-dots"></i></button>
-  <div class="chatbot-modal" id="chatbotModal">
-    <header>Chat with us</header>
-    <div class="chatbot-content">
-      <p>Hello! How can we help you today?</p>
-    </div>
-    <footer>
-      <input type="text" placeholder="Type your message...">
-      <button>Send</button>
-    </footer>
   </div>
-
-  <!-- Secure Login Modal -->
-  <div id="loginModal">
-    <div class="modal-content">
-      <h2>Login</h2>
-      <form>
-        <input type="email" placeholder="Email" required>
-        <input type="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+  
+  <!-- Login Modal -->
+  <div id="login-modal" class="hidden fixed inset-0 flex items-center justify-center z-50">
+    <div id="login-close-overlay" class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="bg-white dark:bg-gray-800 p-8 rounded shadow-lg z-10 max-w-md w-full mx-auto">
+      <h3 class="text-2xl font-bold mb-4">Login</h3>
+      <form class="space-y-4">
+        <input type="email" placeholder="Email" class="w-full p-3 border rounded" required>
+        <input type="password" placeholder="Password" class="w-full p-3 border rounded" required>
+        <button type="submit" class="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded">Login</button>
       </form>
-      <p style="text-align:center; margin-top:1rem;"><a href="#">Forgot Password?</a></p>
+      <p class="mt-4 text-center">
+        <a href="#" class="text-blue-500 hover:underline">Forgot Password?</a>
+      </p>
+      <button id="close-login" class="mt-4 block mx-auto px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded">
+        Close
+      </button>
     </div>
   </div>
-
+  
+  <!-- Inline Scripts -->
   <script>
-    // Hamburger menu toggle for mobile
-    document.getElementById('hamburger').addEventListener('click', function () {
-      document.getElementById('nav-menu').classList.toggle('active');
+    // Dark mode toggle
+    document.getElementById('toggle-dark').addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      this.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
     });
-
-    // Accordion functionality
-    document.querySelectorAll('.accordion-header').forEach(header => {
-      header.addEventListener('click', () => {
-        header.classList.toggle('active');
-        const content = header.nextElementSibling;
-        content.style.maxHeight = header.classList.contains('active') ? content.scrollHeight + "px" : null;
-      });
-    });
-
-    // FAQ Toggle
-    document.querySelectorAll('.faq-item').forEach(item => {
-      item.addEventListener('click', () => {
-        item.classList.toggle('active');
-      });
-    });
-
-    // Pricing Toggle
-    const pricingSwitch = document.getElementById('pricingSwitch');
-    pricingSwitch.addEventListener('change', () => {
-      document.querySelectorAll('.pricing-card').forEach(card => {
-        const monthly = card.getAttribute('data-monthly');
-        const yearly = card.getAttribute('data-yearly');
-        const priceElem = card.querySelector('.price');
-        priceElem.textContent = pricingSwitch.checked ? "$" + yearly + "/yr" : "$" + monthly + "/mo";
-      });
-    });
-
-    // Mode Toggle for Dashboard Preview
-    const modeSwitch = document.getElementById('modeSwitch');
-    modeSwitch.addEventListener('change', () => {
-      const dashboardSection = document.getElementById('dashboard');
-      if (modeSwitch.checked) {
-        dashboardSection.style.background = "#333";
-        dashboardSection.style.color = "#fff";
-      } else {
-        dashboardSection.style.background = "var(--bg-light)";
-        dashboardSection.style.color = "#333";
-      }
-    });
-
+    
     // Chatbot toggle
-    const chatbotToggle = document.getElementById('chatbotToggle');
-    const chatbotModal = document.getElementById('chatbotModal');
-    chatbotToggle.addEventListener('click', () => {
-      chatbotModal.style.display = chatbotModal.style.display === "flex" ? "none" : "flex";
+    document.getElementById('open-chatbot').addEventListener('click', function() {
+      document.getElementById('chatbot').classList.toggle('hidden');
     });
+    
+    // Floating Help Button
+    document.getElementById('help-btn').addEventListener('click', function() {
+      document.getElementById('help-modal').classList.remove('hidden');
+    });
+    document.getElementById('help-close-overlay').addEventListener('click', function() {
+      document.getElementById('help-modal').classList.add('hidden');
+    });
+    document.getElementById('close-help').addEventListener('click', function() {
+      document.getElementById('help-modal').classList.add('hidden');
+    });
+    
+    // Login Modal
+    document.getElementById('open-login').addEventListener('click', function() {
+      document.getElementById('login-modal').classList.remove('hidden');
+    });
+    document.getElementById('login-close-overlay').addEventListener('click', function() {
+      document.getElementById('login-modal').classList.add('hidden');
+    });
+    document.getElementById('close-login').addEventListener('click', function() {
+      document.getElementById('login-modal').classList.add('hidden');
+    });
+    
+    // GSAP Animations for hero text
+    gsap.from("#hero .relative", { opacity: 0, duration: 1, y: -50 });
+    gsap.from("#features .p-6", { opacity: 0, duration: 1, x: -50, stagger: 0.2, delay: 0.5 });
+    
+    // Three.js Floating Cube
+    (function(){
+      const canvas = document.getElementById('three-canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+      camera.position.z = 2;
+      
+      const geometry = new THREE.BoxGeometry();
+      const material = new THREE.MeshStandardMaterial({ color: 0x20C997 });
+      const cube = new THREE.Mesh(geometry, material);
+      scene.add(cube);
+      
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(0, 0, 5);
+      scene.add(directionalLight);
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
   </script>
 </body>
 </html>

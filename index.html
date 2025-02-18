@@ -1,290 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slick Interactive Website</title>
-  <style>
-    /* Reset and base styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #333;
-      line-height: 1.6;
-    }
-    /* Header and navigation */
-    header {
-      background: #333;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-    }
-    nav ul li {
-      margin: 0 15px;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      transition: color 0.3s ease;
-    }
-    nav ul li a:hover {
-      color: #f39c12;
-    }
-    /* Hero Section */
-    section.hero {
-      background: url('your-background-image.jpg') no-repeat center center/cover;
-      min-height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-align: center;
-      position: relative;
-    }
-    section.hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 0;
-    }
-    .hero-content {
-      z-index: 1;
-      font-size: 2em;
-      animation: fadeIn 2s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #f39c12;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 20px;
-      transition: background 0.3s ease;
-    }
-    .btn:hover {
-      background: #e67e22;
-    }
-    /* Container and Cards */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    section {
-      padding: 60px 0;
-    }
-    .card-section {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-    }
-    .card {
-      background: #fff;
-      width: 300px;
-      margin: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      overflow: hidden;
-    }
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-    .card img {
-      width: 100%;
-      display: block;
-    }
-    .card-content {
-      padding: 20px;
-    }
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top:0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal.active {
-      display: flex;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
-      position: relative;
-    }
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 20px;
-      color: #333;
-      cursor: pointer;
-    }
-    /* Responsive adjustments */
-    @media (max-width:768px) {
-      nav ul {
-        flex-direction: column;
-      }
-      .card-section {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird Clone</title>
+    <style>
+        @import "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
+        
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #87ceeb;
+        }
+
+        #gameCanvas {
+            border: 2px solid #000;
+            background-color: #77dd77;
+        }
+    </style>
 </head>
 <body>
+    <canvas id="gameCanvas" width="320" height="480"></canvas>
 
-  <header>
-    <nav>
-      <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
 
-  <!-- Hero Section -->
-  <section id="hero" class="hero">
-    <div class="hero-content">
-      <h1>Welcome to Our Interactive Site</h1>
-      <a href="#services" class="btn">Explore Now</a>
-    </div>
-  </section>
+        // Game variables
+        let bird = { x: 50, y: 240, dy: 0, radius: 10, color: '#ffcc00' };
+        let gravity = 0.25;
+        let pipes = [];
+        let score = 0;
+        let gameOver = false;
 
-  <!-- Services Section with Interactive Cards -->
-  <section id="services" class="container">
-    <h2 style="text-align: center; margin-bottom: 20px;">Our Services</h2>
-    <div class="card-section">
-      <div class="card">
-        <img src="https://via.placeholder.com/300x200" alt="Service 1">
-        <div class="card-content">
-          <h3>Interactive Design</h3>
-          <p>Engaging design elements to capture your audience.</p>
-          <button class="btn open-modal" data-modal="modal1">Learn More</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="https://via.placeholder.com/300x200" alt="Service 2">
-        <div class="card-content">
-          <h3>Responsive UI</h3>
-          <p>Seamless experience on any device.</p>
-          <button class="btn open-modal" data-modal="modal2">Learn More</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="https://via.placeholder.com/300x200" alt="Service 3">
-        <div class="card-content">
-          <h3>Dynamic Interaction</h3>
-          <p>Smooth transitions and real-time feedback.</p>
-          <button class="btn open-modal" data-modal="modal3">Learn More</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="container">
-    <h2 style="text-align: center; margin-bottom: 20px;">Get in Touch</h2>
-    <form id="contactForm" style="max-width:600px; margin:0 auto;">
-      <div style="margin-bottom:15px;">
-        <label for="name">Name</label><br>
-        <input type="text" id="name" name="name" style="width:100%; padding:10px; margin-top:5px;">
-      </div>
-      <div style="margin-bottom:15px;">
-        <label for="email">Email</label><br>
-        <input type="email" id="email" name="email" style="width:100%; padding:10px; margin-top:5px;">
-      </div>
-      <div style="margin-bottom:15px;">
-        <label for="message">Message</label><br>
-        <textarea id="message" name="message" style="width:100%; padding:10px; margin-top:5px;" rows="5"></textarea>
-      </div>
-      <button type="submit" class="btn">Submit</button>
-    </form>
-  </section>
-
-  <!-- Modal Windows -->
-  <div id="modal1" class="modal">
-    <div class="modal-content">
-      <span class="modal-close">&times;</span>
-      <h2>Interactive Design</h2>
-      <p>We bring your brand to life with innovative design techniques and interactive elements.</p>
-    </div>
-  </div>
-  <div id="modal2" class="modal">
-    <div class="modal-content">
-      <span class="modal-close">&times;</span>
-      <h2>Responsive UI</h2>
-      <p>Our interfaces deliver a seamless experience across all devices.</p>
-    </div>
-  </div>
-  <div id="modal3" class="modal">
-    <div class="modal-content">
-      <span class="modal-close">&times;</span>
-      <h2>Dynamic Interaction</h2>
-      <p>Smooth transitions and real-time feedback enhance user engagement.</p>
-    </div>
-  </div>
-
-  <script>
-    // Modal functionality using JavaScript event handling
-    const openModalButtons = document.querySelectorAll('.open-modal');
-    const closeModalButtons = document.querySelectorAll('.modal-close');
-    const modals = document.querySelectorAll('.modal');
-
-    openModalButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const modalId = this.getAttribute('data-modal');
-        document.getElementById(modalId).classList.add('active');
-      });
-    });
-
-    closeModalButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        this.parentElement.parentElement.classList.remove('active');
-      });
-    });
-
-    window.addEventListener('click', function(e) {
-      modals.forEach(modal => {
-        if (e.target === modal) {
-          modal.classList.remove('active');
+        // Game loop
+        function gameLoop() {
+            if (!gameOver) {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            } else {
+                ctx.font = "24px Arial";
+                ctx.fillStyle = "red";
+                ctx.fillText("Game Over! Score: " + score, 50, 240);
+            }
         }
-      });
-    });
-  </script>
 
+        function update() {
+            // Apply gravity to bird
+            bird.dy += gravity;
+            bird.y += bird.dy;
+
+            // Check if bird hits ground or ceiling
+            if (bird.y > canvas.height - bird.radius || bird.y < bird.radius) {
+                gameOver = true;
+            }
+
+            // Move pipes
+            pipes.forEach(pipe => {
+                pipe.x -= 2;
+            });
+
+            // Remove out-of-view pipes
+            if (pipes.length > 0 && pipes[0].x + pipes[0].width < 0) {
+                pipes.shift();
+            }
+
+            // Add new pipe
+            if (pipes[pipes.length - 1] === undefined || pipes[pipes.length - 1].x < canvas.width - 300) {
+                let pipeHeight = Math.floor(Math.random() * (canvas.height - 150)) + 50;
+                pipes.push({ x: canvas.width, y: 0, width: 50, height: pipeHeight, color: '#006400' });
+                pipes.push({ x: canvas.width, y: pipeHeight + 150, width: 50, height: canvas.height - pipeHeight - 150, color: '#006400' });
+            }
+
+            // Check for collision with pipes
+            for (let pipe of pipes) {
+                if (bird.x + bird.radius > pipe.x && bird.x - bird.radius < pipe.x + pipe.width &&
+                    (bird.y - bird.radius < pipe.height || bird.y + bird.radius > pipe.y)) {
+                    gameOver = true;
+                }
+            }
+
+            // Score up when passing a pipe
+            if (pipes.length > 0 && pipes[0].x === bird.x) {
+                score++;
+            }
+        }
+
+        function draw() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw bird
+            ctx.beginPath();
+            ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
+            ctx.fillStyle = bird.color;
+            ctx.fill();
+
+            // Draw pipes
+            pipes.forEach(pipe => {
+                ctx.fillStyle = pipe.color;
+                ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+            });
+
+            // Draw score
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText("Score: " + score, 10, 30);
+        }
+
+        // Jump function
+        function jump() {
+            bird.dy = -5;
+        }
+
+        // Event listener for jump
+        document.addEventListener('click', jump);
+
+        // Start game
+        gameLoop();
+    </script>
 </body>
 </html>
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​

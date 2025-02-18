@@ -1,88 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird Clone</title>
-    <style>
-        @import "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
-        
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #87ceeb;
-            font-family: Arial, sans-serif;
-        }
-
-        #gameContainer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #77dd77;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        #gameCanvas {
-            border: 2px solid #000;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=='); /* Simple grass texture */
-        }
-
-        #restartButton {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #restartButton:hover {
-            background-color: #45a049;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Windows XP Simulator Chaos</title>
+  <style>
+    /* Reset styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    /* Desktop background covering area above taskbar */
+    #desktop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 40px; /* reserve space for taskbar */
+      background: url('https://i.imgur.com/NdMCs4V.jpg') no-repeat center center;
+      background-size: cover;
+      overflow: hidden;
+    }
+    
+    /* Desktop icons styling */
+    .icon {
+      position: absolute;
+      width: 80px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .icon img {
+      width: 64px;
+      height: 64px;
+    }
+    .icon span {
+      display: block;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+      font-size: 12px;
+    }
+    
+    /* Manually place some icons on the desktop */
+    .icon:nth-child(1) { top: 20px; left: 20px; }
+    .icon:nth-child(2) { top: 20px; left: 120px; }
+    .icon:nth-child(3) { top: 120px; left: 20px; }
+    .icon:nth-child(4) { top: 120px; left: 120px; }
+    
+    /* Taskbar styling */
+    #taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(to top, #2a2d60, #4a4f91);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      font-family: Tahoma, sans-serif;
+    }
+    
+    /* Start button styling */
+    #start-button {
+      background: #0078D7;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+    
+    /* Clock styling */
+    #clock {
+      font-size: 14px;
+    }
+    
+    /* Start menu styling */
+    #start-menu {
+      position: fixed;
+      bottom: 40px;
+      left: 0;
+      width: 220px;
+      background: #0044AA;
+      color: white;
+      font-family: Tahoma, sans-serif;
+      display: none;
+      z-index: 1000;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    }
+    #start-menu-header {
+      padding: 10px;
+      background: #0078D7;
+      font-weight: bold;
+      border-bottom: 1px solid #003399;
+    }
+    #start-menu-list {
+      list-style: none;
+      padding: 5px;
+    }
+    #start-menu-list li {
+      padding: 5px;
+      cursor: pointer;
+    }
+    #start-menu-list li:hover {
+      background: #0055AA;
+    }
+    #start-menu-date {
+      padding: 10px;
+      font-size: 12px;
+      border-top: 1px solid #003399;
+    }
+    
+    /* Window (pop-up) styling */
+    .window {
+      position: absolute;
+      width: 320px;
+      height: 200px;
+      background: #C0C0C0;
+      border: 2px solid #000;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+      font-family: Tahoma, sans-serif;
+      z-index: 500;
+    }
+    .window-header {
+      background: linear-gradient(to right, #0078D7, #0044AA);
+      color: white;
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      cursor: move;
+    }
+    .window-content {
+      padding: 10px;
+      background: white;
+      height: calc(100% - 30px);
+      overflow: auto;
+    }
+    .close-btn {
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 2px 5px;
+    }
+    
+    /* BSOD styling */
+    #bsod {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0000AA;
+      color: white;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-family: Consolas, monospace;
+      z-index: 2000;
+    }
+    
+    /* Right-click context menu styling */
+    #context-menu {
+      position: absolute;
+      background: #FFFFFF;
+      border: 1px solid #CCC;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1500;
+      font-family: Tahoma, sans-serif;
+    }
+    #context-menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 5px 0;
+    }
+    #context-menu ul li {
+      padding: 5px 20px;
+      cursor: pointer;
+    }
+    #context-menu ul li:hover {
+      background: #EEE;
+    }
+  </style>
 </head>
 <body>
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="320" height="480"></canvas>
-        <button id="restartButton">Restart</button>
+  <!-- Desktop with icons -->
+  <div id="desktop">
+    <div class="icon" data-app="myComputer">
+      <img src="https://upload.wikimedia.org/wikipedia/en/3/3c/Windows_XP_My_Computer.png" alt="My Computer">
+      <span>My Computer</span>
     </div>
+    <div class="icon" data-app="recycleBin">
+      <img src="https://upload.wikimedia.org/wikipedia/en/4/4f/Windows_XP_Recycle_Bin.png" alt="Recycle Bin">
+      <span>Recycle Bin</span>
+    </div>
+    <div class="icon" data-app="internetExplorer">
+      <img src="https://upload.wikimedia.org/wikipedia/en/0/0b/Internet_Explorer_6.png" alt="Internet Explorer">
+      <span>Internet Explorer</span>
+    </div>
+    <div class="icon" data-app="notepad">
+      <img src="https://upload.wikimedia.org/wikipedia/en/5/50/Notepad_%28Windows%29.png" alt="Notepad">
+      <span>Notepad</span>
+    </div>
+  </div>
+  
+  <!-- Taskbar -->
+  <div id="taskbar">
+    <div id="start-button">Start</div>
+    <div id="clock"></div>
+  </div>
+  
+  <!-- Start Menu -->
+  <div id="start-menu">
+    <div id="start-menu-header">Start Menu</div>
+    <ul id="start-menu-list">
+      <li data-app="myComputer">My Computer</li>
+      <li data-app="internetExplorer">Internet Explorer</li>
+      <li data-app="notepad">Notepad</li>
+      <li data-app="recycleBin">Recycle Bin</li>
+    </ul>
+    <div id="start-menu-date"></div>
+  </div>
+  
+  <!-- Container for application windows and pop-ups -->
+  <div id="popup-container"></div>
+  
+  <!-- Fake Blue Screen of Death -->
+  <div id="bsod">A fatal error has occurred. Windows has shut down.</div>
+  
+  <!-- Right-click Context Menu -->
+  <div id="context-menu">
+    <ul>
+      <li id="refresh-desktop">Refresh</li>
+      <li id="new-folder">New Folder</li>
+    </ul>
+  </div>
+  
+  <script>
+    let popupCount = 0;
+    let windowZIndex = 500; // base z-index for windows
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const restartButton = document.getElementById('restartButton');
+    document.addEventListener("DOMContentLoaded", function() {
+      updateClock();
+      setInterval(updateClock, 1000);
+      updateStartMenuDate();
+      // Spawn an initial chaotic window after a few seconds
+      setTimeout(spawnChaosWindow, 3000);
+    });
 
-        // Game variables
-        let bird = { x: 50, y: 240, dy: 0, radius: 10, color: '#ffcc00' };
-        let gravity = 0.25;
-        let pipes = [];
-        let score = 0;
-        let gameOver = false;
+    // Update taskbar clock with the current time
+    function updateClock() {
+      let now = new Date();
+      let timeString = now.toLocaleTimeString();
+      document.getElementById("clock").innerText = timeString;
+    }
 
-        // Game loop
-        function gameLoop() {
-            if (!gameOver) {
-                update();
-                draw();
-                requestAnimationFrame(gameLoop);
-            } else {
-                ctx.font = "24px Arial";
-                ctx.fillStyle = "red";
-                ctx.fillText("Game Over! Score: " + score, 50, 240);
-            }
+    // Update the date displayed in the Start Menu
+    function updateStartMenuDate() {
+      let now = new Date();
+      let dateString = now.toLocaleDateString();
+      document.getElementById("start-menu-date").innerText = dateString;
+    }
+
+    // Toggle Start Menu display
+    document.getElementById("start-button").addEventListener("click", function(e) {
+      e.stopPropagation();
+      let menu = document.getElementById("start-menu");
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    });
+
+    // Hide Start Menu and context menu on any click elsewhere
+    document.addEventListener("click", function() {
+      document.getElementById("start-menu").style.display = "none";
+      document.getElementById("context-menu").style.display = "none";
+    });
+
+    // Start Menu item clicks open the corresponding app window
+    document.querySelectorAll("#start-menu-list li").forEach(item => {
+      item.addEventListener("click", function(e) {
+        e.stopPropagation();
+        openApp(this.getAttribute("data-app"));
+        document.getElementById("start-menu").style.display = "none";
+      });
+    });
+
+    // Desktop icon double-click to open apps
+    document.querySelectorAll(".icon").forEach(icon => {
+      icon.addEventListener("dblclick", function(e) {
+        openApp(this.getAttribute("data-app"));
+      });
+    });
+
+    // Function to open an application window
+    function openApp(appName) {
+      let win = document.createElement("div");
+      win.className = "window";
+      win.style.top = Math.random() * (window.innerHeight - 250) + "px";
+      win.style.left = Math.random() * (window.innerWidth - 350) + "px";
+      win.style.zIndex = ++windowZIndex;
+      win.innerHTML = `
+        <div class="window-header">
+          <span>${appName}</span>
+          <button class="close-btn">X</button>
+        </div>
+        <div class="window-content">
+          ${getAppContent(appName)}
+        </div>
+      `;
+      document.getElementById("popup-container").appendChild(win);
+      addDragFunctionality(win);
+      win.querySelector(".close-btn").addEventListener("click", function(e) {
+        e.stopPropagation();
+        win.remove();
+        popupCount++;
+        spawnChaosWindow();
+        if (popupCount > 20) {
+          triggerBSOD();
         }
+      });
+    }
 
-        function update() {
-            // Apply gravity to bird
-            bird.dy += gravity;
-            bird.y += bird.dy;
+    // Return fake content based on the app name
+    function getAppContent(appName) {
+      switch(appName) {
+        case "myComputer":
+          return "<p>This is My Computer. Your drives: C:\\, D:\\, E:\\ etc.</p>";
+        case "internetExplorer":
+          return "<p>Welcome to Internet Explorer!<br>Loading your homepage...</p>";
+        case "notepad":
+          return '<textarea style="width:100%; height:100%;"></textarea>';
+        case "recycleBin":
+          return "<p>The Recycle Bin is empty.</p>";
+        default:
+          return "<p>Application content goes here.</p>";
+      }
+    }
 
-           
-​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+    // Add simple drag functionality to windows
+    function addDragFunctionality(elmnt) {
+      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      const header = elmnt.querySelector(".window-header");
+      header.onmousedown = dragMouseDown;
+      
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+      }
+      
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+      }
+      
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    // Spawn a chaotic pop-up window that mimics system errors
+    function spawnChaosWindow() {
+      let win = document.createElement("div");
+      win.className = "window";
+      win.style.top = Math.random() * (window.innerHeight - 250) + "px";
+      win.style.left = Math.random() * (window.innerWidth - 350) + "px";
+      win.style.zIndex = ++windowZIndex;
+      win.innerHTML = `
+        <div class="window-header">
+          <span>System Error</span>
+          <button class="close-btn">X</button>
+        </div>
+        <div class="window-content">
+          <p>An unexpected error occurred. Please click OK to continue.</p>
+          <button onclick="spawnChaosWindow(); playErrorSound();">OK</button>
+        </div>
+      `;
+      document.getElementById("popup-container").appendChild(win);
+      addDragFunctionality(win);
+      win.querySelector(".close-btn").addEventListener("click", function(e) {
+        e.stopPropagation();
+        win.remove();
+        popupCount++;
+        spawnChaosWindow();
+        spawnChaosWindow();
+        if (popupCount > 20) {
+          triggerBSOD();
+        }
+      });
+      playErrorSound();
+    }
+
+    // Trigger the Blue Screen of Death (BSOD)
+    function triggerBSOD() {
+      document.getElementById("bsod").style.display = "flex";
+      playBSODSound();
+    }
+
+    // Play a Windows XP error sound
+    function playErrorSound() {
+      let audio = new Audio("https://www.myinstants.com/media/sounds/windows-xp-error.mp3");
+      audio.play();
+    }
+
+    // Play a Windows XP shutdown sound for the BSOD
+    function playBSODSound() {
+      let audio = new Audio("https://www.myinstants.com/media/sounds/windows-xp-shutdown.mp3");
+      audio.play();
+    }
+
+    // Right-click context menu on the desktop
+    document.getElementById("desktop").addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+      let menu = document.getElementById("context-menu");
+      menu.style.display = "block";
+      menu.style.top = e.clientY + "px";
+      menu.style.left = e.clientX + "px";
+    });
+
+    // Context menu: Refresh desktop (reload the page)
+    document.getElementById("refresh-desktop").addEventListener("click", function(e) {
+      location.reload();
+    });
+
+    // Context menu: New Folder (adds a new folder icon to the desktop)
+    document.getElementById("new-folder").addEventListener("click", function(e) {
+      let folder = document.createElement("div");
+      folder.className = "icon";
+      folder.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Folder_yellow_icon.svg/1024px-Folder_yellow_icon.svg.png" alt="New Folder"><span>New Folder</span>`;
+      folder.style.top = Math.random() * (window.innerHeight - 100) + "px";
+      folder.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      folder.addEventListener("dblclick", function() {
+        openApp("New Folder");
+      });
+      document.getElementById("desktop").appendChild(folder);
+    });
+  </script>
+</body>
+</html>

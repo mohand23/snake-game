@@ -12,22 +12,52 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #87ceeb;
+            font-family: Arial, sans-serif;
+        }
+
+        #gameContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #77dd77;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         #gameCanvas {
             border: 2px solid #000;
-            background-color: #77dd77;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=='); /* Simple grass texture */
+        }
+
+        #restartButton {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #restartButton:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="320" height="480"></canvas>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="320" height="480"></canvas>
+        <button id="restartButton">Restart</button>
+    </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const restartButton = document.getElementById('restartButton');
 
         // Game variables
         let bird = { x: 50, y: 240, dy: 0, radius: 10, color: '#ffcc00' };
@@ -54,75 +84,5 @@
             bird.dy += gravity;
             bird.y += bird.dy;
 
-            // Check if bird hits ground or ceiling
-            if (bird.y > canvas.height - bird.radius || bird.y < bird.radius) {
-                gameOver = true;
-            }
-
-            // Move pipes
-            pipes.forEach(pipe => {
-                pipe.x -= 2;
-            });
-
-            // Remove out-of-view pipes
-            if (pipes.length > 0 && pipes[0].x + pipes[0].width < 0) {
-                pipes.shift();
-            }
-
-            // Add new pipe
-            if (pipes[pipes.length - 1] === undefined || pipes[pipes.length - 1].x < canvas.width - 300) {
-                let pipeHeight = Math.floor(Math.random() * (canvas.height - 150)) + 50;
-                pipes.push({ x: canvas.width, y: 0, width: 50, height: pipeHeight, color: '#006400' });
-                pipes.push({ x: canvas.width, y: pipeHeight + 150, width: 50, height: canvas.height - pipeHeight - 150, color: '#006400' });
-            }
-
-            // Check for collision with pipes
-            for (let pipe of pipes) {
-                if (bird.x + bird.radius > pipe.x && bird.x - bird.radius < pipe.x + pipe.width &&
-                    (bird.y - bird.radius < pipe.height || bird.y + bird.radius > pipe.y)) {
-                    gameOver = true;
-                }
-            }
-
-            // Score up when passing a pipe
-            if (pipes.length > 0 && pipes[0].x === bird.x) {
-                score++;
-            }
-        }
-
-        function draw() {
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw bird
-            ctx.beginPath();
-            ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
-            ctx.fillStyle = bird.color;
-            ctx.fill();
-
-            // Draw pipes
-            pipes.forEach(pipe => {
-                ctx.fillStyle = pipe.color;
-                ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
-            });
-
-            // Draw score
-            ctx.font = "20px Arial";
-            ctx.fillStyle = "black";
-            ctx.fillText("Score: " + score, 10, 30);
-        }
-
-        // Jump function
-        function jump() {
-            bird.dy = -5;
-        }
-
-        // Event listener for jump
-        document.addEventListener('click', jump);
-
-        // Start game
-        gameLoop();
-    </script>
-</body>
-</html>
+           
 ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
